@@ -1,8 +1,13 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { styled } from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import EventsContext from "../context/EventsContext";
 import useMoveSound from "../hooks/useMoveSound";
 import SearchedHotel from "./SearchedHotel";
 import "./Booking.css";
@@ -11,8 +16,9 @@ import { useNavigate } from "react-router-dom";
 import BookingContext from "../context/BookingContext";
 import useConditionalHandler from "../hooks/useConditionalHandler";
 import { cosine } from "string-comparison";
+import AsideContext from "../context/AsideContext";
+
 export default function Booking() {
-  // string comparison
   // States
   const [activeInputBox, setActiveInputBox] = useState(null);
   const [isInsideSearchBox, setIsInsideSearchBox] = useState(false);
@@ -24,7 +30,8 @@ export default function Booking() {
   const moveSound = useMoveSound;
   const navigate = useNavigate();
   // contexts
-  const eventsContext = useContext(EventsContext);
+  const asideContext = useContext(AsideContext);
+  const { asideActive, setAsideActive } = asideContext;
   const bookingContext = useContext(BookingContext);
   // prettier-ignore
   const { showHotels, location, checkIn, checkOut, guests } = bookingContext.bookingParams;
@@ -45,23 +52,38 @@ export default function Booking() {
 
   // automatically set that user is in searchbox when this page becames active from navigation, and activate first input box
   useEffect(() => {
-    if (eventsContext.pageContentNavigation) {
+    if (!asideActive) {
       setIsInsideSearchBox(true);
       setActiveInputBox(1);
     }
-  }, [eventsContext.pageContentNavigation]);
+  }, [asideActive]);
 
   // enable event when user is inside any box
   useConditionalHandler(searchNav, isInsideSearchBox);
   useConditionalHandler(insideInpNav, isInsideInput);
   useConditionalHandler(searchedHotelsNav, isInsideHotels);
 
-  // responsible for updating contect data, so the user search parameters won't be lost
+  // filtering hotels list
+  const filterHotels = useCallback(() => {
+    let newHotels = HOTELS.filter(
+      (hotel) =>
+        // if more then 50% similar, approve filter
+        cosine.similarity(
+          hotel.location.toLowerCase().replace(/\s/g, ""),
+          bookingContext.bookingParams.location.toLowerCase().replace(/\s/g, "")
+        ) > 0.5
+    );
+    // if none found, return all
+    if (newHotels.length === 0) {
+      newHotels = HOTELS;
+    }
+    setFilteredHotels([...newHotels]);
+  }, [bookingContext.bookingParams.location]);
 
   // responsible to update filtered hotels list
   useEffect(() => {
     showHotels && filterHotels();
-  }, [showHotels]);
+  }, [showHotels, filterHotels]);
 
   // Navigation event handlers
   // when user is inside hotels list
@@ -231,8 +253,7 @@ export default function Booking() {
     leaveAll();
     setActiveHotel(null);
     setActiveInputBox(null);
-    eventsContext.setPageContentNavigation(false);
-    eventsContext.setAsideNavigation(true);
+    setAsideActive(true);
   }
   // removes every event handler
   function leaveAll() {
@@ -333,23 +354,6 @@ export default function Booking() {
     }
   }
 
-  // filtering hotels list
-  function filterHotels() {
-    let newHotels = HOTELS.filter(
-      (hotel) =>
-        // if more then 50% similar, approve filter
-        cosine.similarity(
-          hotel.location.toLowerCase().replace(/\s/g, ""),
-          bookingContext.bookingParams.location.toLowerCase().replace(/\s/g, "")
-        ) > 0.5
-    );
-    // if none found, return all
-    if (newHotels.length === 0) {
-      newHotels = HOTELS;
-    }
-    setFilteredHotels([...newHotels]);
-  }
-
   return (
     <BookingWrapper>
       <Title up={showHotels ? "true" : "false"}>Travel, Earn, Repeat!</Title>
@@ -401,12 +405,12 @@ const BookingWrapper = styled.div`
   @media (max-width: 1921px) {
     left: 25vw;
   }
-  
+
   top: 50%;
   transform: translateY(-50%);
   @media (min-width: 1921px) {
     left: 50%;
-    transform: translateY(-50%) translateX(-485px)
+    transform: translateY(-50%) translateX(-485px);
   }
   background-image: url(https://nomadao.net/public/uploads/0000/1/2023/04/05/form-bg.jpg);
   background-repeat: no-repeat;
@@ -479,21 +483,6 @@ const InputText = styled.label`
   line-height: 24px;
   color: #01739f;
 `;
-const Select = styled.select`
-  background: transparent;
-  border: none;
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 16px;
-  color: #9e9e9e;
-  &:focus {
-    outline: none;
-  }
-`;
-const Option = styled.option``;
-
 const Search = styled.button`
   width: 160px;
   height: 45px;
@@ -512,7 +501,6 @@ const Search = styled.button`
     color: white;
   }
 `;
-
 const Input = styled.input`
   background: transparent;
   border: none;
@@ -526,11 +514,6 @@ const Input = styled.input`
     outline: none;
   }
 `;
-
-const Span = styled.span`
-  margin-inline: 30px;
-`;
-
 const HotelsWrapper = styled.div`
   width: 70%;
   height: 70%;
@@ -544,7 +527,7 @@ const HotelsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  row-gap: 20px;
   padding: 20px;
   border-radius: 10px;
 `;

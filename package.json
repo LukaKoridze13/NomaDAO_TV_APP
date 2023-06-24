@@ -1,9 +1,10 @@
 {
   "homepage": "https://nomadaotvapp.lukakoridze.com/",
-  "name": "tizen_react",
-  "version": "0.1.0",
+  "name": "nomadao_tv_app",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -15,9 +16,6 @@
     "string-comparison": "^1.1.0",
     "styled-components": "^6.0.0-rc.3",
     "web-vitals": "^2.1.4"
-  },
-  "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "7.21.11"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -42,5 +40,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.22.5"
   }
 }

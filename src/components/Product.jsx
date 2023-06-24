@@ -1,43 +1,46 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { styled } from "styled-components";
 import Logo from "../assets/images/logo.png";
 import Arrow from "../assets/images/arrow-back.png";
 import useMoveSound from "../hooks/useMoveSound";
-import EventsContext from "../context/EventsContext";
 import { useEncodeLink } from "../hooks/useEncodeLink";
+import AsideContext from "../context/AsideContext";
+import singlePages from "../data/singlePages";
+import useKeyHanderEffect from "../hooks/useKeyHanderEffect";
+import useRemoveSpaces from "../hooks/useRemoveSpaces";
+import ProductContext from "../context/ProductContext";
 
 export default function Product() {
   const { product } = useParams();
-
+  // context
+  const asideContext = useContext(AsideContext);
+  const { pages, activePage } = asideContext;
+  const productContext = useContext(ProductContext);
+  const { setProduct } = productContext;
+  // state
   const [active, setActive] = useState("launch");
+  // prettier-ignore
+  const data = singlePages.find((page) => page.title === product); // find product data
+  // hooks
   const navigate = useNavigate();
-  const eventsContext = useContext(EventsContext);
   const encodeLink = useEncodeLink;
   const moveSound = useMoveSound;
-  const { setPageContentNavigation, singlePages } = eventsContext;
-  const [data, setData] = useState(
-    singlePages.find((page) => page.title === product)
-  );
-
-
-  useEffect(() => {
-    document.addEventListener("keyup", productNavigation);
-    return () => {
-      document.removeEventListener("keyup", productNavigation);
-    };
-  }, [product, active]);
-
+  const removeSpaces = useRemoveSpaces;
+  // adding listeners
+  useKeyHanderEffect(productNavigation);
+  // event handler
   function productNavigation(event) {
     switch (event.keyCode) {
       case 13:
         if (active === "back") {
           exit();
         } else if (active === "launch") {
-          navigate("/streaming/" + encodeLink(data.launch_link));
+          openStreaming(data.launch_link);
         } else if (active === "tutorial") {
-          navigate("/streaming/" + encodeLink(data.tutorial_link));
+          openStreaming(data.tutorial_link);
         }
+        moveSound();
         break;
       case 38:
         if (active !== "back") {
@@ -65,22 +68,27 @@ export default function Product() {
         break;
       case 8:
         exit();
+        moveSound();
+
         break;
       case 10009:
         exit();
+        moveSound();
+
         break;
 
       default:
         break;
     }
   }
-
-  function exit() {
-    setPageContentNavigation(true);
-    navigate(-1);
-    console.log("Exit from product page")
+  // functions
+  function openStreaming(link) {
+    navigate("/streaming/" + encodeLink(link));
+    setProduct(product);
   }
-
+  function exit() {
+    navigate(`/${removeSpaces(pages[activePage])}`);
+  }
   return (
     <SinglePage img={data.img}>
       <Top>

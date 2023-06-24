@@ -3,13 +3,16 @@ import { styled } from "styled-components";
 import SearchIcon from "../assets/images/search.png";
 import MicrophoneIcon from "../assets/images/microphone.png";
 import { Outlet } from "react-router-dom";
-import EventsContext from "../context/EventsContext";
+import AsideContext from "../context/AsideContext";
+
 export default function RightSide() {
-  const context = useContext(EventsContext);
-  let isBooking = context.pages.find((page) => page.name === "Book Your Hotel").active
+  const asideContext = useContext(AsideContext);
+  const { pages, activePage } = asideContext;
+  const isBooking = pages[activePage] === "Book Your Hotel"; // get's if active page is booking, because then search won't be rendered
   return (
     <Right>
       <Header>
+        {/* show search menu if it's ! not booking */}
         {!isBooking && (
           <SearchBox>
             <SearchInput placeholder="Search Nomadao products" />
@@ -19,7 +22,7 @@ export default function RightSide() {
             </VoiceSearch>
           </SearchBox>
         )}
-        <ButtonsBox style={{marginLeft: isBooking && "auto"}}>
+        <ButtonsBox style={{ marginLeft: isBooking && "auto" }}>
           <Button>Login</Button>
           <Button>Sign Up</Button>
         </ButtonsBox>
@@ -44,7 +47,6 @@ const Header = styled.header`
   position: relative;
   z-index: 2;
 `;
-
 
 const SearchBox = styled.div`
   display: flex;

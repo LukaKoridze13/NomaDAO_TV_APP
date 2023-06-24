@@ -2,7 +2,8 @@ import React from "react";
 import { styled } from "styled-components";
 
 export default function SearchedHotel(props) {
-  const { mainImage, name, rating, facilities, location, price, activeBox } = props;
+  const { mainImage, name, rating, facilities, location, price, activeBox } =
+    props;
   return (
     <Box active={activeBox} key={name}>
       <Img src={mainImage} />
@@ -13,13 +14,11 @@ export default function SearchedHotel(props) {
           <p>Facilities:</p>
           <Facilities>
             {facilities.map((facility) => (
-              <Facility key={name+facility}>{facility}</Facility>
+              <Facility key={name + facility}>{facility}</Facility>
             ))}
           </Facilities>
         </FacilitiesWrapper>
-        <Location>
-          Location: {location}
-        </Location>
+        <Location>Location: {location}</Location>
         <PriceWrapper>
           <p>from</p>
           <Price>${price} / night</Price>
@@ -39,10 +38,9 @@ const Box = styled.div`
 
   display: flex;
 
-  &:nth-child(${(props)=>props.active}){
-    background-color:#01729f39 ;
+  &:nth-child(${(props) => props.active}) {
+    background-color: #01729f39;
   }
-  
 `;
 
 const Img = styled.img`
@@ -174,6 +172,4 @@ const Price = styled.div`
   font-size: 20px;
   line-height: 19px;
   color: #ececec;
-
-
 `;

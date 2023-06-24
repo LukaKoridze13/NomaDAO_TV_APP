@@ -1,221 +1,106 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { styled } from "styled-components";
 import BigBox from "./BigBox";
-import Banner from "./Banner";
-import SmallBox from "./SmallBox";
-import EventsContext from "../context/EventsContext";
 import useMoveSound from "../hooks/useMoveSound";
-
+import pagesContent from "../data/pagesContent";
+import AsideContext from "../context/AsideContext";
+import useConditionalHandler from "../hooks/useConditionalHandler";
 export default function PageContent() {
-  let { pagename } = useParams();
-
-  if (pagename === "index.html") {
-    pagename = "Home";
-  }
-
- 
-
-  const eventsContext = useContext(EventsContext);
-  const navigate = useNavigate();
+  let { pagename } = useParams(); // getting the name of the page
+  // state
+  const [pageData, setPageData] = useState(pagesContent[pagename]);
+  const [activeBox, setActiveBox] = useState(false);
+  // context
+  const asideContext = useContext(AsideContext);
+  // prettier-ignore
+  const { asideActive, setAsideActive} = asideContext;
+  // hooks
   const moveSound = useMoveSound;
+  const navigate = useNavigate();
+  useEffect(() => {
+    setPageData(pagesContent[pagename]);
+  }, [pagename]);
+  // detect if user moved on this page, and activate banner
+  useEffect(() => {
+    !asideActive && setActiveBox(0);
+  }, [asideActive]);
+  // adding events
+  useConditionalHandler(boxesNav, activeBox !== false); //  !==false because when it's 0, it's still returned as false
+  // event handers
+  function boxesNav(event) {
+    switch (event.keyCode) {
+      // Down Arrow
+      case 40:
+        downBox();
+        moveSound();
+        break;
 
-  const {
-    setAsideNavigation,
-    pageContentNavigation,
-    setPageContentNavigation,
-    content,
-  } = eventsContext;
+      // Up Arrow
+      case 38:
+        upBox();
+        moveSound();
+        break;
 
-  const [pageData, setPageData] = useState(content[pagename]);
+      // Left Arrow
+      case 37:
+        returnToAside();
+        moveSound();
+        break;
 
-  function contentNavigation(event) {
-    if (pagename === "Home") {
-      const activeIndex = pageData.indexOf(
-        pageData.find((page) => page.active)
-      );
-      switch (event.keyCode) {
-        case 40:
-          if (activeIndex === 0) {
-            nextBox();
-          } else if (pageData[activeIndex + 3]) {
-            downBox();
-          }
-          break;
-        case 38:
-          if (activeIndex === 0) {
-            activateSearch();
-          } else if (pageData[activeIndex - 3]) {
-            upBox();
-          } else if (activeIndex > 0 && activeIndex < 4) {
-            goBox(0);
-          }
-          break;
-        case 37:
-          if (pageData[0].active) {
-            leavePageEnterAside();
-          } else if(activeIndex%3===1) {
-            leavePageEnterAside();
-          }else{
-            prevBox();
-          }
-          break;
-        case 39:
-          nextBox();
-          break;
-        case 8:
-          leavePageEnterAside();
-          break;
-        case 10009:
-          leavePageEnterAside();
-          break;
-        default:
-          break;
-      }
-    } else {
-      switch (event.keyCode) {
-        case 40:
-          nextBox();
-          break;
-        case 38:
-          prevBox();
-          break;
-        case 37:
-          leavePageEnterAside();
-          break;
-        case 8:
-          leavePageEnterAside();
-          break;
-        case 10009:
-          leavePageEnterAside();
-          break;
-        default:
-          break;
-      }
-    }
-    if (event.keyCode === 13) {
-      openProductPage();
+      // Right Arrow
+      case 39:
+        break;
+
+      // Backspace
+      case 8:
+        returnToAside();
+        moveSound();
+        break;
+
+      // Back button on remote
+      case 10009:
+        returnToAside();
+        moveSound();
+        break;
+      // Enter - Ok
+      case 13:
+        openSinlgePage(pageData[activeBox].title);
+        moveSound();
+        break;
+
+      default:
+        break;
     }
   }
-
-  function openProductPage() {
-    setPageContentNavigation(false);
-    navigate(`/products/${pageData.find((prod) => prod.active).title}`);
+  // functions
+  function openSinlgePage(name) {
+    navigate("/products/" + name);
   }
-  function nextBox() {
-    let currentActiveBox = pageData.find((box) => box.active);
-    let indexOfActiveBox = pageData.indexOf(currentActiveBox);
-    currentActiveBox.active = false;
-    if (indexOfActiveBox === pageData.length - 1) {
-      pageData[0].active = true;
-    } else {
-      pageData[indexOfActiveBox + 1].active = true;
-    }
-    pageData.length > 1 && moveSound();
-    setPageData([...pageData]);
-  }
-  function prevBox() {
-    let currentActiveBox = pageData.find((box) => box.active);
-    let indexOfActiveBox = pageData.indexOf(currentActiveBox);
-    currentActiveBox.active = false;
-    if (indexOfActiveBox === 0 ) {
-      pageData[pageData.length - 1].active = true;
-    } else {
-      pageData[indexOfActiveBox - 1].active = true;
-    }
-    pageData.length > 1 && moveSound();
-    setPageData([...pageData]);
+  function returnToAside() {
+    setAsideActive(true);
+    setActiveBox(false);
   }
   function downBox() {
-    let currentActiveBox = pageData.find((box) => box.active);
-    let indexOfActiveBox = pageData.indexOf(currentActiveBox);
-    currentActiveBox.active = false;
-    pageData[indexOfActiveBox + 3].active = true;
-    moveSound();
-    setPageData([...pageData]);
+    if (activeBox === pageData.length - 1) {
+      setActiveBox(0);
+    } else {
+      setActiveBox(activeBox + 1);
+    }
   }
   function upBox() {
-    let currentActiveBox = pageData.find((box) => box.active);
-    let indexOfActiveBox = pageData.indexOf(currentActiveBox);
-    currentActiveBox.active = false;
-    pageData[indexOfActiveBox - 3].active = true;
-    moveSound();
-    setPageData([...pageData]);
-  }
-  function goBox(index) {
-    let currentActiveBox = pageData.find((box) => box.active);
-    currentActiveBox.active = false;
-    pageData[index].active = true;
-    moveSound();
-    setPageData([...pageData]);
-  }
-  function activateSearch() {
-    console.log("activateSearch");
-  }
-  function leavePageEnterAside() {
-    setAsideNavigation(true);
-    setPageContentNavigation(false);
-    pageData.forEach((data) => {
-      data.active = false;
-    });
-    setPageData([...pageData]);
-    moveSound();
-  }
-
-  useEffect(() => {
-    pageContentNavigation &&
-      document.addEventListener("keyup", contentNavigation);
-    if (!pageData.find((page) => page.active) && pageContentNavigation) {
-      pageData[0].active = true;
+    if (activeBox === 0) {
+      setActiveBox(pageData.length - 1);
+    } else {
+      setActiveBox(activeBox - 1);
     }
-    pageContentNavigation && setPageData([...pageData]);
-    return () => {
-      document.removeEventListener("keyup", contentNavigation);
-    };
-  }, [pageContentNavigation]);
-
-  useEffect(() => {
-    setPageData([...content[pagename]]);
-  }, [pagename]);
+  }
   return (
-    <Wrapper pagename={pagename}>
-          {pagename === "Home" ? (
-            <>
-              {/* prettier-ignore */}
-              <Banner title={pageData[0].title} img={pageData[0].img} active={ pageData[0].active !== undefined ? pageData[0].active.toString() : "false"}/>
-              {pageData.map((smallBox, index) => {
-                if (index > 0) {
-                  return (
-                    /* prettier-ignore */
-                    <SmallBox title={smallBox.title} img={smallBox.img} key={smallBox.title + "SMALL" + index} active={ pageData[index].active !== undefined ? pageData[index].active.toString() : "false"}
-                    />
-                  );
-                }
-              })}
-            </>)
-            : (<>
-            {pageData.map((box, index) => {
-          const { title, img, description, active } = box;
-          return (
-            <BigBox
-              key={title + "BigBox" + index}
-              title={title}
-              img={img}
-              description={description}
-              active={active !== undefined ? active.toString() : "false"}
-            />
-          );
-            })}
-            </>)
-
-          }
-    </Wrapper>
+    <>
+      {pageData.map((box, index) => {
+        const { title, img, description } = box;
+        // prettier-ignore
+        return <BigBox key={title + "BigBox"} title={title} img={img} description={description} active={activeBox === index ? 'true' : 'false'} />
+      })}
+    </>
   );
 }
-
-const Wrapper = styled.div`
-  display: ${(props) => (props.pagename === "Home" ? "flex" : "block")};
-  row-gap: ${(props) => (props.pagename === "Home" ? "40px" : "0px")};
-  flex-wrap: wrap;
-  justify-content: space-between;
-`;

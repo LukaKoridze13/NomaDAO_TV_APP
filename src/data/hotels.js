@@ -1,4 +1,4 @@
-export default [
+const hotels =  [
   {
     name: "Hotel Old Seti",
     mainImage:
@@ -440,3 +440,5 @@ export default [
     price: 773,
   },
 ];
+
+export default hotels;

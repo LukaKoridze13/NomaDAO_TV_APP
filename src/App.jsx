@@ -1,150 +1,33 @@
-import React, { useState } from "react";
-import EventsContext from "./context/EventsContext";
+import React, { useEffect, useState } from "react";
 import BookingContext from "./context/BookingContext";
-import { Outlet } from "react-router-dom";
-
-import NomadEntertainment from "./assets/images/NomadEntertainment.png";
-import HotelHighlightsin3D from "./assets/images/HotelHighlightsin3D.png";
-import World3DTour from "./assets/images/World3DTour(sightseeing).png";
-import Home from "./assets/images/Home.png";
-import Booking from "./assets/images/Booking.png";
-
+import { Outlet, useNavigate } from "react-router-dom";
+import AsideContext from "./context/AsideContext";
+import ProductContext from "./context/ProductContext";
 export default function App() {
-  const [asideNavigation, setAsideNavigation] = useState(true);
-  const [pageContentNavigation, setPageContentNavigation] = useState(false);
+  // hooks
+  const navigate = useNavigate();
+  // states
+  const [asideActive, setAsideActive] = useState(true); // should aside navigation events be active
   // prettier-ignore
-  const [bookingParams, setBookingParams] = useState({showHotels: false, location: "Tbilisi",checkIn: new Date(),checkOut: new Date(), guests: 2});
-  
-  const [pages, setPages] = useState([
-    { name: "Home", icon: Home, active: true },
-    {
-      name: "Nomad Entertainment",
-      icon: NomadEntertainment,
-      active: false,
-    },
-    {
-      name: "Hotel Highlights in 3D",
-      icon: HotelHighlightsin3D,
-      active: false,
-    },
-    {
-      name: "World 3D Tour (sightseeing)",
-      icon: World3DTour,
-      active: false,
-    },
-    {
-      name: "Book Your Hotel",
-      icon: Booking,
-      active: false,
-    },
-  ]);
-  const [singlePages, setSinglePages] = useState([
-    {
-      title: "Nomadao Event Hall",
-      img: "https://i.ibb.co/SvqxsMC/eventhall.jpg",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur reiciendis necessitatibus, quo labore voluptatibus veniam voluptates distinctio voluptas impedit tempore assumenda, repellendus dolorem amet unde? Vel officiis soluta voluptatem perspiciatis!",
-      launch_link: "https://rooms.nomadao.net:4443",
-      tutorial_link: "https://www.youtube.com/embed/a1vclMx4eFQ",
-    },
-    {
-      title: "3D Casino",
-      img: "https://i.ibb.co/7XkP6Nq/casino.jpg",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur reiciendis necessitatibus, quo labore voluptatibus veniam voluptates distinctio voluptas impedit tempore assumenda, repellendus dolorem amet unde? Vel officiis soluta voluptatem perspiciatis!",
-      launch_link: "https://rooms.nomadao.net:4443",
-      tutorial_link: "https://www.youtube.com/embed/a1vclMx4eFQ",
-    },
-    {
-      title: "3D Hotel Tour",
-      img: "https://i.ibb.co/2Kn8fM2/hotel.jpg",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur reiciendis necessitatibus, quo labore voluptatibus veniam voluptates distinctio voluptas impedit tempore assumenda, repellendus dolorem amet unde? Vel officiis soluta voluptatem perspiciatis!",
-      launch_link: "https://rooms.nomadao.net:4443",
-      tutorial_link: "https://www.youtube.com/embed/a1vclMx4eFQ",
-    },
-    {
-      title: "World 3D Tour",
-      img: "https://i.ibb.co/hYWMKsd/verse.jpg",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur reiciendis necessitatibus, quo labore voluptatibus veniam voluptates distinctio voluptas impedit tempore assumenda, repellendus dolorem amet unde? Vel officiis soluta voluptatem perspiciatis!",
-      launch_link: "https://rooms.nomadao.net:4443",
-      tutorial_link: "https://www.youtube.com/embed/a1vclMx4eFQ",
-    },
-  ]);
-  const [content, setContent] = useState({
-    Home: [
-      {
-        title: "Nomadao Event Hall",
-        img: "https://i.ibb.co/yg8SBcY/eventhall-banner.png",
-      },
-      {
-        type: "small",
-        title: "3D Casino",
-        img: "https://i.ibb.co/NYFtq1D/casino-small.png",
-      },
-      {
-        type: "small",
-        title: "3D Hotel Tour",
-        img: "https://i.ibb.co/qyNXDBn/hotel-small.png",
-      },
-      {
-        type: "small",
-        title: "World 3D Tour",
-        img: "https://i.ibb.co/YD1wfD3/verse-small.png",
-      },
-    ],
-    NomadEntertainment: [
-      {
-        type: "big",
-        title: "3D Casino",
-        description:
-          "Lorem ipsum dolor sit amet consectetur. amet consectetur. amet consectetur. ",
-        img: "https://i.ibb.co/JkRzh9B/casino-big.png",
-      },
-      {
-        type: "big",
-        title: "Nomadao Event Hall",
-        description:
-          "Lorem ipsum dolor sit amet consectetur. amet consectetur. amet consectetur. ",
-        img: "https://i.ibb.co/yg8SBcY/eventhall-banner.png",
-      },
-    ],
-    HotelHighlightsin3D: [
-      {
-        type: "big",
-        title: "3D Hotel Tour",
-        description:
-          "Lorem ipsum dolor sit amet consectetur. amet consectetur. amet consectetur. ",
-        img: "https://i.ibb.co/3S2DQYT/room-big.png",
-      },
-    ],
-    "World3DTour(sightseeing)": [
-      {
-        type: "big",
-        title: "World 3D Tour",
-        description:
-          "Lorem ipsum dolor sit amet consectetur. amet consectetur. amet consectetur. ",
-        img: "https://i.ibb.co/x6QZvSy/verse-big.png",
-      },
-    ],
-    BookYourHotel: [
-      {
-        type: "big",
-        title: "World 3D Tour",
-        description:
-          "Lorem ipsum dolor sit amet consectetur. amet consectetur. amet consectetur. ",
-        img: "https://i.ibb.co/x6QZvSy/verse-big.png",
-      },
-    ],
-  });
+  const [pages, setPages] = useState([ "Home", "Nomad Entertainment", "Hotel Highlights in 3D", "World 3D Tour (sightseeing)","Book Your Hotel"]); // list of all pages
+  const [activePage, setActivePage] = useState(0); // the page index from pages which is currently active
+  const [product, setProduct] = useState(null); // to save single product page which was last visited, becaise navigate(-1) doesn't work on TV when we want to go back from streaming
+  // prettier-ignore
+  const [bookingParams, setBookingParams] = useState({showHotels: false, location: "Tbilisi",checkIn: new Date(),checkOut: new Date(), guests: 2}); //user filled booking data stored
+
+  // navigate to home page on first render
+  useEffect(() => {
+    navigate("/Home");
+  }, [navigate]);
+
   return (
     // prettier-ignore
-    <EventsContext.Provider value={{asideNavigation,setAsideNavigation,pageContentNavigation,setPageContentNavigation,pages,setPages,singlePages,setSinglePages,content,setContent,}}>
-      {/* prettier-ignore */}
+    <AsideContext.Provider value={{ asideActive, setAsideActive, pages, setPages, activePage, setActivePage}}>
       <BookingContext.Provider value={{bookingParams, setBookingParams}}>
-        <Outlet />
+          <ProductContext.Provider value={{product, setProduct}}>
+            <Outlet />
+          </ProductContext.Provider>
       </BookingContext.Provider>
-    </EventsContext.Provider>
+    </AsideContext.Provider>
   );
 }

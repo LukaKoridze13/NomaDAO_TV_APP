@@ -10,6 +10,7 @@ import Streaming from "./components/Streaming";
 import Error from "./components/Error";
 import Booking from "./components/Booking";
 import SingleHotel from "./components/SingleHotel";
+import HomeContent from "./components/HomeContent";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,14 @@ const router = createBrowserRouter([
           {
             path: "BookYourHotel",
             element: <Booking />, // Booking component rendered when the path is '/BookYourHotel', it's custom page, so doesn't share same struture as /:pageName
+          },
+          {
+            path: "Home",
+            element: <HomeContent />, // HomeContent component rendered when the path is '/Home', it's custom page, so doesn't share same struture as /:pageName
+          },
+          {
+            path: "index.html",
+            element: <HomeContent />, // HomeContent component rendered when the path is '/index.html', for localhost
           },
           {
             path: ":pagename",

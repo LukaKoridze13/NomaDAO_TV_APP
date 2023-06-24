@@ -9,9 +9,8 @@
   color: #9e9e9e;
   position: relative;
 }
-.react-datepicker{
+.react-datepicker {
   z-index: 100;
-
 }
 .date-picker:focus {
   outline: none;

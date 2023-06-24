@@ -1,24 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { styled } from "styled-components";
+import ProductContext from "../context/ProductContext";
+import useKeyHandlerEffect from "../hooks/useKeyHanderEffect";
+import useMoveSound from "../hooks/useMoveSound";
 
 export default function Streaming() {
   const { link } = useParams();
   const navigate = useNavigate();
-  useEffect(() => {
-    document.addEventListener("keyup", streamingEvents);
-    return () => {
-      document.removeEventListener("keyup", streamingEvents);
-    };
-  }, []);
+  const moveSound = useMoveSound;
+  const productContext = useContext(ProductContext);
+  const { product } = productContext; // lastly visited product, navigate(-1) doesn't work for TV
+
+  useKeyHandlerEffect(streamingEvents);
 
   function streamingEvents(event) {
     switch (event.keyCode) {
       case 8:
         exit();
+        moveSound();
         break;
       case 10009:
         exit();
+        moveSound();
         break;
       default:
         break;
@@ -26,8 +30,7 @@ export default function Streaming() {
   }
 
   function exit() {
-    console.log("exit from streaaming");
-    navigate(-1);
+    navigate(`/products/` + product);
   }
 
   return <Stream src={link}></Stream>;

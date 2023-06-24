@@ -65,7 +65,7 @@ export default function SingleHotel() {
   // state
   // before getting real otherImages in each hotel, adding testing
   // prettier-ignore
-  const [hotel, setHotel] = useState({ ...HOTELS.find((hotel) => hotel.name === hotelName), otherImages, rooms});
+  const hotel = { ...HOTELS.find((hotel) => hotel.name === hotelName), otherImages, rooms};
   const [sliderIndex, setSliderIndex] = useState(0);
   const [isSliderActive, setIsSliderActive] = useState(true);
   const [roomsActive, setRoomsActive] = useState(false);
@@ -316,9 +316,9 @@ export default function SingleHotel() {
 
 const Wrapper = styled.div`
   width: 100vw;
-  height: 150vh;
+  height: 160vh;
   max-width: 1920px;
-  max-height: 1720px;
+  max-height: 1820px;
   overflow: scroll;
   background-color: rgb(204, 227, 236);
   position: relative;
@@ -461,7 +461,6 @@ const Rooms = styled.div`
   overflow: auto;
   border-radius: 20px;
   border-top-right-radius: 0px;
-
 `;
 
 const Room = styled.div`

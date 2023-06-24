@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { styled } from "styled-components";
-
 export default function Banner(props) {
   const { title, active, img } = props;
 
@@ -19,7 +18,7 @@ const Box = styled.div`
   background-size: 100% auto;
   position: relative;
   margin-bottom: 30px;
-  background-image: ${(props) => `url(${props.image})`};
+  background-image: url(${(props) => props.image});
   ${(props) =>
     props.active === "true" &&
     "box-shadow: 0px 0px 14px 8px #bebebe;border: 2px solid #ececec;"};

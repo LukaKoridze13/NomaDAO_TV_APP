@@ -1,109 +1,96 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import Logo from "../assets/images/logo.png";
 import { styled } from "styled-components";
 import AsideElement from "./AsideElement";
 import useMoveSound from "../hooks/useMoveSound";
 import { useNavigate } from "react-router-dom";
-import EventsContext from "../context/EventsContext";
-
+import useConditionalHandler from "../hooks/useConditionalHandler";
+import AsideContext from "../context/AsideContext";
+import useRemoveSpaces from "../hooks/useRemoveSpaces";
 export default function Aside() {
-  const eventsContext = useContext(EventsContext);
-
-  const {
-    asideNavigation,
-    setAsideNavigation,
-    setPageContentNavigation,
-    pages,
-    setPages,
-  } = eventsContext;
-
+  // Context
+  const asideContext = useContext(AsideContext);
+  // prettier-ignore
+  const { asideActive, setAsideActive, pages, activePage, setActivePage} = asideContext;
+  // hooks
   const moveSound = useMoveSound;
   const navigate = useNavigate();
-
+  const removeSpaces = useRemoveSpaces;
+  // adding listeners
+  useConditionalHandler(asideEvents, asideActive);
+  // event handlers
   function asideEvents(event) {
     switch (event.keyCode) {
+      // Arrow Down
       case 40:
         nextPage();
+        moveSound();
         break;
+      // Arrow Up
       case 38:
         prevPage();
+        moveSound();
         break;
+      // Enter
       case 13:
-        leaveAside();
+        openPage();
+        moveSound();
         break;
+      // Right
       case 39:
-        leaveAside();
+        openPage();
+        moveSound();
         break;
       default:
         break;
     }
   }
-
-  function nextPage() {
-    let currentActivePage = pages.find((page) => page.active);
-    let indexOfActivePage = pages.indexOf(currentActivePage);
-    currentActivePage.active = false;
-    if (indexOfActivePage === pages.length - 1) {
-      pages[0].active = true;
-    } else {
-      pages[indexOfActivePage + 1].active = true;
-    }
-    setPages([...pages]);
+  // movement functions
+  function openPage() {
+    setAsideActive(false);
   }
-
   function prevPage() {
-    let currentActivePage = pages.find((page) => page.active);
-    let indexOfActivePage = pages.indexOf(currentActivePage);
-    currentActivePage.active = false;
-    if (indexOfActivePage === 0) {
-      pages[pages.length - 1].active = true;
+    if (activePage === 0) {
+      setActivePage(pages.length - 1);
+      navigate(`/${removeSpaces(pages[pages.length - 1])}`);
     } else {
-      pages[indexOfActivePage - 1].active = true;
+      setActivePage(activePage - 1);
+      navigate(`/${removeSpaces(pages[activePage - 1])}`);
     }
-    setPages([...pages]);
+  }
+  function nextPage() {
+    if (activePage === pages.length - 1) {
+      setActivePage(0);
+      navigate(`/${removeSpaces(pages[0])}`);
+    } else {
+      setActivePage(activePage + 1);
+      navigate(`/${removeSpaces(pages[activePage + 1])}`);
+    }
   }
 
-  function leaveAside() {
-    setAsideNavigation(false);
-    setPageContentNavigation(true);
-    moveSound();
-  }
-
-  useEffect(() => {
-    asideNavigation && document.addEventListener("keyup", asideEvents);
-    return () => {
-      document.removeEventListener("keyup", asideEvents);
-    };
-  }, [asideNavigation]);
-
-  useEffect(() => {
-    moveSound();
-    let currentActivePage = pages.find((page) => page.active);
-    navigate(`/${currentActivePage.name.replace(/\s/g, "")}`);
-  }, [pages]);
-  
   return (
-    <AsideE>
+    <StyledAside>
       <Img src={Logo} alt="Logo" />
       <nav>
         <ul>
-          {pages.map((page) => {
+          {pages.map((page, index) => {
             return (
               <AsideElement
-                key={page.name}
-                name={page.name}
-                active={page.active.toString()}
-                icon={page.icon}
+                key={page}
+                name={page}
+                active={index === activePage ? "true" : "false"}
+                // prettier-ignore
+                saved={Boolean((index === activePage) && !asideActive) ? "true" : "false"} // when user leaves aside navigation, page will be saved in UI
               />
             );
           })}
         </ul>
       </nav>
-    </AsideE>
+    </StyledAside>
   );
 }
 
-const AsideE = styled.aside`
+const StyledAside = styled.aside`
   width: 25vw;
   height: 100%;
   background: rgba(52, 172, 243, 0.5);
