@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 
-const useDynamicImage = (imageName) => {
+const useDynamicImage = (imageName, extension='png') => {
   const [imageSrc, setImageSrc] = useState(null);
 
   useEffect(() => {
     const loadImage = async () => {
       try {
-        const image = await import(`../assets/images/${imageName}.png`);
+        const image = await import(`../assets/images/${imageName}.${extension}`);
         setImageSrc(image.default);
       } catch (error) {
         console.error("Error loading image:", error);
@@ -14,7 +14,7 @@ const useDynamicImage = (imageName) => {
     };
 
     loadImage();
-  }, [imageName]);
+  }, [imageName, extension]);
 
   return imageSrc;
 };

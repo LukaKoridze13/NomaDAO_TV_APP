@@ -5,6 +5,7 @@ import useMoveSound from "../hooks/useMoveSound";
 import pagesContent from "../data/pagesContent";
 import AsideContext from "../context/AsideContext";
 import useConditionalHandler from "../hooks/useConditionalHandler";
+import { styled } from "styled-components";
 export default function PageContent() {
   let { pagename } = useParams(); // getting the name of the page
   // state
@@ -95,12 +96,18 @@ export default function PageContent() {
     }
   }
   return (
-    <>
+    <Wrapper>
       {pageData.map((box, index) => {
         const { title, img, description } = box;
         // prettier-ignore
         return <BigBox key={title + "BigBox"} title={title} img={img} description={description} active={activeBox === index ? 'true' : 'false'} />
       })}
-    </>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 0px 60px 0px 40px;
+`;

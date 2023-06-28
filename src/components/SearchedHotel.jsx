@@ -35,8 +35,11 @@ const Box = styled.div`
   background-color: white;
   border-radius: 10px;
   border: 1px solid #01739f;
-
+  margin-top: 20px;
   display: flex;
+  &:first-child {
+    margin-top: 0px;
+  }
 
   &:nth-child(${(props) => props.active}) {
     background-color: #01729f39;

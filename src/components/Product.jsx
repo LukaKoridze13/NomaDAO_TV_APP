@@ -37,9 +37,10 @@ export default function Product() {
           exit();
         } else if (active === "launch") {
           openStreaming(data.launch_link);
-        } else if (active === "tutorial") {
-          openStreaming(data.tutorial_link);
         }
+        // } else if (active === "tutorial") {
+        //   openStreaming(data.tutorial_link);
+        // }
         moveSound();
         break;
       case 38:
@@ -55,16 +56,16 @@ export default function Product() {
         }
         break;
       case 39:
-        if (active === "launch") {
-          setActive("tutorial");
-          moveSound();
-        }
+        // if (active === "launch") {
+        //   setActive("tutorial");
+        //   moveSound();
+        // }
         break;
       case 37:
-        if (active === "tutorial") {
-          setActive("launch");
-          moveSound();
-        }
+        // if (active === "tutorial") {
+        //   setActive("launch");
+        //   moveSound();
+        // }
         break;
       case 8:
         exit();
@@ -102,7 +103,7 @@ export default function Product() {
         <Title>{data.title}</Title>
         <Buttons>
           <Launch active={active}>Launch</Launch>
-          <Tutorial active={active}>Tutorial</Tutorial>
+          {/* <Tutorial active={active}>Tutorial</Tutorial> */}
         </Buttons>
         <Description>{data.description}</Description>
       </Bottom>
@@ -219,11 +220,12 @@ const Launch = styled(Button)`
     props.active === "launch" &&
     "color: #ececec;background-color: rgba(20, 170, 254, 1);"}
 `;
-const Tutorial = styled(Button)`
-  ${(props) =>
-    props.active === "tutorial" &&
-    "color: #ececec;background-color: rgba(20, 170, 254, 1);"}
-`;
+
+// const Tutorial = styled(Button)`
+//   ${(props) =>
+//     props.active === "tutorial" &&
+//     "color: #ececec;background-color: rgba(20, 170, 254, 1);"}
+// `;
 
 const Buttons = styled.div`
   display: flex;

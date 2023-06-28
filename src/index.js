@@ -11,7 +11,13 @@ import Error from "./components/Error";
 import Booking from "./components/Booking";
 import SingleHotel from "./components/SingleHotel";
 import HomeContent from "./components/HomeContent";
-
+import AuthMarketplace from "./components/AuthMarketplace";
+import MarketplaceHotel from "./components/MarketplaceHotel";
+import MarketplaceAgency from "./components/MarketplaceAgency";
+import DashboardHotel from "./components/DashboardHotel";
+import DashboardAgency from "./components/DashboardAgency";
+import ActiveBalanceHotel from "./components/ActiveBalanceHotel";
+import ActivebalanceAgency from "./components/ActiveBalanceAgency";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -21,6 +27,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />, // Home component rendered when the path is '/' as known as index element
         children: [
+          {
+            path: "Marketplace",
+            element: <AuthMarketplace />, // Marketplace login/register page
+          },
           {
             path: "BookYourHotel",
             element: <Booking />, // Booking component rendered when the path is '/BookYourHotel', it's custom page, so doesn't share same struture as /:pageName
@@ -50,6 +60,22 @@ const router = createBrowserRouter([
       {
         path: "/hotel/:hotelName",
         element: <SingleHotel />, // SingleHotel component is used to show personal page for each hotel
+      },
+      {
+        path: "/marketplace/hotel",
+        element: <MarketplaceHotel />, // marketplace for hotel
+        children: [
+          { path: "Dashboard", element: <DashboardHotel /> },
+          { path: "ActiveBalance", element: <ActiveBalanceHotel /> },
+        ],
+      },
+      {
+        path: "/marketplace/agency",
+        element: <MarketplaceAgency />, // marketplace for hotel
+        children: [
+          { path: "Dashboard", element: <DashboardAgency /> },
+          { path: "ActiveBalance", element: <ActivebalanceAgency /> },
+        ],
       },
     ],
   },

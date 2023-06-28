@@ -4,7 +4,7 @@ const singlePages = [
     img: "https://i.ibb.co/SvqxsMC/eventhall.jpg",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur reiciendis necessitatibus, quo labore voluptatibus veniam voluptates distinctio voluptas impedit tempore assumenda, repellendus dolorem amet unde? Vel officiis soluta voluptatem perspiciatis!",
-    launch_link: "https://rooms.nomadao.net:4443",
+    launch_link: "https://eventhall.nomadao.net",
     tutorial_link: "https://www.youtube.com/embed/a1vclMx4eFQ",
   },
   {
@@ -12,7 +12,7 @@ const singlePages = [
     img: "https://i.ibb.co/7XkP6Nq/casino.jpg",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur reiciendis necessitatibus, quo labore voluptatibus veniam voluptates distinctio voluptas impedit tempore assumenda, repellendus dolorem amet unde? Vel officiis soluta voluptatem perspiciatis!",
-    launch_link: "https://rooms.nomadao.net:4443",
+    launch_link: "https://casino.nomadao.net",
     tutorial_link: "https://www.youtube.com/embed/a1vclMx4eFQ",
   },
   {
@@ -28,7 +28,7 @@ const singlePages = [
     img: "https://i.ibb.co/hYWMKsd/verse.jpg",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur reiciendis necessitatibus, quo labore voluptatibus veniam voluptates distinctio voluptas impedit tempore assumenda, repellendus dolorem amet unde? Vel officiis soluta voluptatem perspiciatis!",
-    launch_link: "https://rooms.nomadao.net:4443",
+    launch_link: "https://3dmap.nomadao.net",
     tutorial_link: "https://www.youtube.com/embed/a1vclMx4eFQ",
   },
 ];

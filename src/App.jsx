@@ -9,7 +9,7 @@ export default function App() {
   // states
   const [asideActive, setAsideActive] = useState(true); // should aside navigation events be active
   // prettier-ignore
-  const [pages, setPages] = useState([ "Home", "Nomad Entertainment", "Hotel Highlights in 3D", "World 3D Tour (sightseeing)","Book Your Hotel"]); // list of all pages
+  const [pages, setPages] = useState([ "Home", "Nomad Entertainment", "Hotel Highlights in 3D", "World 3D Tour (sightseeing)","Book Your Hotel", "Marketplace"]); // list of all pages
   const [activePage, setActivePage] = useState(0); // the page index from pages which is currently active
   const [product, setProduct] = useState(null); // to save single product page which was last visited, becaise navigate(-1) doesn't work on TV when we want to go back from streaming
   // prettier-ignore

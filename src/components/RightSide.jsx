@@ -8,25 +8,28 @@ import AsideContext from "../context/AsideContext";
 export default function RightSide() {
   const asideContext = useContext(AsideContext);
   const { pages, activePage } = asideContext;
-  const isBooking = pages[activePage] === "Book Your Hotel"; // get's if active page is booking, because then search won't be rendered
+  const isBooking = pages[activePage] === "Book Your Hotel"; //  search won't be rendered on this pages
+  const isMarketplace = pages[activePage] === "Marketplace"; // header won't be rendered on this pages
   return (
     <Right>
-      <Header>
-        {/* show search menu if it's ! not booking */}
-        {!isBooking && (
-          <SearchBox>
-            <SearchInput placeholder="Search Nomadao products" />
-            <VoiceSearch>
-              <img src={MicrophoneIcon} alt="Mic" />
-              <span>Type or voice</span>
-            </VoiceSearch>
-          </SearchBox>
-        )}
-        <ButtonsBox style={{ marginLeft: isBooking && "auto" }}>
-          <Button>Login</Button>
-          <Button>Sign Up</Button>
-        </ButtonsBox>
-      </Header>
+      {!isMarketplace && (
+        <Header>
+          {/* show search menu if it's ! not booking */}
+          {!isBooking && (
+            <SearchBox>
+              <SearchInput placeholder="Search Nomadao products" />
+              <VoiceSearch>
+                <img src={MicrophoneIcon} alt="Mic" />
+                <span>Type or voice</span>
+              </VoiceSearch>
+            </SearchBox>
+          )}
+          <ButtonsBox style={{ marginLeft: isBooking && "auto" }}>
+            <Button>Login</Button>
+            <Button>Sign Up</Button>
+          </ButtonsBox>
+        </Header>
+      )}
       <Outlet />
     </Right>
   );
@@ -35,14 +38,13 @@ export default function RightSide() {
 const Right = styled.div`
   width: 75vw;
   height: 100%;
-  padding: 0px 60px 0px 40px;
 `;
 
 const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 35px 0px;
+  padding: 35px 60px 35px 40px;
 
   position: relative;
   z-index: 2;

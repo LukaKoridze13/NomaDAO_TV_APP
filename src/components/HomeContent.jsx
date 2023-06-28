@@ -179,4 +179,5 @@ const Wrapper = styled.div`
   justify-content: space-between;
 
   row-gap: 20px;
+  padding: 0px 60px 0px 40px;
 `;
