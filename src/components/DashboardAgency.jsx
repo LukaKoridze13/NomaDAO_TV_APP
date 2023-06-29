@@ -1,7 +1,10 @@
-import React from 'react'
+import React from "react";
+import MarketplaceHeader from "./MarketplaceHeader";
 
 export default function DashboardAgency() {
   return (
-    <div>DashboardAgency</div>
-  )
+    <div>
+      <MarketplaceHeader />
+    </div>
+  );
 }
