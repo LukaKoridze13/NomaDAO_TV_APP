@@ -10,7 +10,11 @@ export const API_register = async ({companyName, companyField, companyID, email,
     response = {status: true};
   }).catch((error) => {
     if(error.message){
-      response = { error: error.message }
+      if (error.response) {
+        response = { error: error.response.data.error };
+      } else {
+        response = { error: error.message };
+      }
     }else{
       response = { error: error.response.data.error };
     }
@@ -28,7 +32,11 @@ export const API_login = async ({ email, password }) => {
     })
     .catch((error) => {
       if (error.message) {
-        response = { error: error.message };
+        if (error.response) {
+          response = { error: error.response.data.error };
+        } else {
+          response = { error: error.message };
+        }
       } else {
         response = { error: error.response.data.error };
       }

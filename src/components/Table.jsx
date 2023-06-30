@@ -1,6 +1,9 @@
 import React from "react";
 import { styled } from "styled-components";
-export default function Table({ header, rows }) {
+import mini1 from "../assets/images/mini.png";
+import mini2 from "../assets/images/mini2.png";
+
+export default function Table({ header, rows, setPopup }) {
   return (
     <Container>
       <TableHeader>
@@ -15,8 +18,16 @@ export default function Table({ header, rows }) {
           return (
             <Row row={row.length}>
               {row.map((item, index) => (
-                <Column>
-                  {index === 0 && <Orange />} {item}
+                <Column item={item} onClick={()=>{item==='Check Details' && setPopup(true)}}>
+                  {index === 0 && <Orange />}{" "}
+                  {item === "photos" ? (
+                    <>
+                      <SmallImage src={mini1} />
+                      <SmallImage src={mini2} />
+                    </>
+                  ) : (
+                    item
+                  )}
                 </Column>
               ))}
             </Row>
@@ -40,8 +51,7 @@ export default function Table({ header, rows }) {
 }
 
 const Container = styled.div`
-  margin-top: 30px;
-  max-width: 920px;
+  max-width: 1020px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -70,7 +80,17 @@ const Column = styled.div`
   &:nth-child(2):not(${TableHeader} *) {
     background-color: #deede5;
     border-radius: 4px;
-    color: #427a5b;
+    background-color: ${(props) => props.item === "Confirmed" && "#deede5"};
+    color: ${(props) => props.item === "Confirmed" && "#427a5b"};
+
+    background-color: ${(props) => props.item === "Rejected" && "#EDDEDE"};
+    color: ${(props) => props.item === "Rejected" && "#7A4242"};
+
+    background-color: ${(props) => props.item === "Pending" && "#FDF8CE"};
+    color: ${(props) => props.item === "Pending" && "#938406"};
+
+    background-color: ${(props) => props.item === "Unverified" && "#D8D8D8"};
+    color: ${(props) => props.item === "Unverified" && "#5F5F5F"};
   }
   &:last-child:not(${TableHeader} *) {
     border-radius: 4px;
@@ -82,7 +102,7 @@ const Column = styled.div`
 
 const Row = styled.div`
   width: 100%;
-  height: 50px;
+  height: 40px;
   display: grid;
   grid-template-columns: ${(props) => {
     return `repeat(${props.row}, 1fr)`;
@@ -93,6 +113,7 @@ const Row = styled.div`
   &:last-child:not(${TableHeader} *) {
     margin-bottom: 8px;
   }
+  padding:0px 10px;
 `;
 
 const TableBody = styled.div`
@@ -145,3 +166,10 @@ const Orange = styled.div`
   margin-right: 8px;
 `;
 
+const SmallImage = styled.img`
+  width: 40px;
+  height: 40px;
+  &:last-child{
+    margin-left: 4px;
+  }
+`;

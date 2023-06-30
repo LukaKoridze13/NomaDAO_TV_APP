@@ -6,12 +6,19 @@ import { Outlet, useNavigate } from "react-router-dom";
 import useRemoveSpaces from "../hooks/useRemoveSpaces";
 import logout from "../assets/images/logout.svg";
 import bell from "../assets/images/notification.svg";
+import Popup from "./Popup";
+
 export default function MarketplaceHotel() {
   const navigate = useNavigate();
   const removeSpaces = useRemoveSpaces;
-
-  const navigation = ["Dashboard", "Active Balance"];
-  const [currentPage, setCurrentPage] = useState("Dashboard");
+  const [popup, setPopup] = useState(false);
+  const navigation = [
+    "Home",
+    "Control Panel",
+    "Group Requests",
+    "Active Balance",
+  ];
+  const [currentPage, setCurrentPage] = useState("Home");
 
   function handleClick(string) {
     setCurrentPage(string); // change current page
@@ -19,9 +26,10 @@ export default function MarketplaceHotel() {
   }
   return (
     <Wrapper>
+      {popup && <Popup setPopup={setPopup} name="Tour Agency #2" />}
       <UserInfo>
-        <div style={{display:'flex', alignItems:'center'}}>
-          <Organe/>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Organe />
           <div>
             <UserName>Karim Benzema</UserName>
             <UserTitle>Admin</UserTitle>
@@ -50,7 +58,7 @@ export default function MarketplaceHotel() {
           <span>Logout</span>
         </Logout>
       </Aside>
-      <Outlet />
+      <Outlet context={{setPopup}}/>
     </Wrapper>
   );
 }
@@ -66,7 +74,7 @@ const Wrapper = styled.div`
 `;
 
 const Aside = styled.aside`
-  width: 20%;
+  width: 22%;
   height: 100%;
   background-color: #f2f2f2;
   padding: 64px 28px;
@@ -104,12 +112,12 @@ const Logout = styled.div`
 const UserInfo = styled.div`
   position: absolute;
   top: 60px;
-  right: 20px;
+  right: 50px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 278px;
+  width: 300px;
 `;
 
 const UserName = styled.p`

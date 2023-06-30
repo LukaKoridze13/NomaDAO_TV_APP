@@ -18,7 +18,7 @@ export default function MarketplaceRegister() {
       } else {
         let page = field_hotel.current.checked ? "hotel" : "agency"
         navigate(
-          "/marketplace/" + page +"/Dashboard"
+          "/marketplace/" + page +"/Home"
         ); // navigate to corresponding page
       }
     }

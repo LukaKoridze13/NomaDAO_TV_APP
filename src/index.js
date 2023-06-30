@@ -18,6 +18,10 @@ import DashboardHotel from "./components/DashboardHotel";
 import DashboardAgency from "./components/DashboardAgency";
 import ActiveBalanceHotel from "./components/ActiveBalanceHotel";
 import ActivebalanceAgency from "./components/ActiveBalanceAgency";
+import GroupRequestsHotel from "./components/GroupRequestsHotel";
+import ControlPanelHotel from "./components/ControlPanelHotel";
+import ControlPanelAgency from "./components/ControlPanelAgency";
+import PublishedHotelsAgency from "./components/PublishedHotelsAgency";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -65,16 +69,20 @@ const router = createBrowserRouter([
         path: "/marketplace/hotel",
         element: <MarketplaceHotel />, // marketplace for hotel
         children: [
-          { path: "Dashboard", element: <DashboardHotel /> },
+          { path: "Home", element: <DashboardHotel /> },
           { path: "ActiveBalance", element: <ActiveBalanceHotel /> },
+          { path: "GroupRequests", element: <GroupRequestsHotel /> },
+          { path: "ControlPanel", element: <ControlPanelHotel /> },
         ],
       },
       {
         path: "/marketplace/agency",
         element: <MarketplaceAgency />, // marketplace for hotel
         children: [
-          { path: "Dashboard", element: <DashboardAgency /> },
+          { path: "Home", element: <DashboardAgency /> },
           { path: "ActiveBalance", element: <ActivebalanceAgency /> },
+          { path: "PublishedHotels", element: <PublishedHotelsAgency /> },
+          { path: "ControlPanel", element: <ControlPanelAgency /> },
         ],
       },
     ],

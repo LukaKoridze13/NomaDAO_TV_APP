@@ -15,7 +15,7 @@ export default function MarketplaceLogin() {
     if (response.error) {
       setError(response.error); // if response contains error, it will be set
     } else {
-      navigate("/marketplace/" + response.field+"/Dashboard"); // navigate to corresponding page
+      navigate("/marketplace/" + response.field+"/Home"); // navigate to corresponding page
     }
   }
   return (

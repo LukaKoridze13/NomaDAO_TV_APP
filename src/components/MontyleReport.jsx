@@ -7,12 +7,12 @@ export default function MontyleReport() {
       <Title>Monthly Report</Title>
       <Gray>
         <Orange>
-          <Big>1,234</Big>
-          <Small>Travelers</Small>
+          <Big>Active Balance</Big>
+          <Small></Small>
         </Orange>
         <Orange>
-          <Big>123</Big>
-          <Small>New partners</Small>
+          <Big>Monthly Report</Big>
+          <Small></Small>
         </Orange>
         <Orange>
           <Big>$420,000</Big>
@@ -32,12 +32,11 @@ const Title = styled.p`
   font-style: normal;
   font-weight: 600;
   line-height: 32px;
-  margin-top: 34px;
 `;
 
 const Gray = styled.div`
   display: flex;
-  width: 920px;
+  width: 1020px;
   height: 100px;
   justify-content: space-around;
   align-items: center;
@@ -55,7 +54,7 @@ const Orange = styled.div`
 
 const Big = styled.p`
   color: #fff;
-  font-size: 24px;
+  font-size: 20px;
   font-family: "Inter";
   font-style: normal;
   font-weight: 600;

@@ -1,8 +1,9 @@
 import React from "react";
-import MarketplaceHeader from "./MarketplaceHeader";
 import { styled } from "styled-components";
 import MontyleReport from "./MontyleReport";
-import TableHotel from "./Table";
+import Table from "./Table";
+import RelatedHotelFares from "./RelatedHotelFares";
+import { useOutletContext } from "react-router-dom";
 const data = {
   header: [
     "Tour Agency",
@@ -15,10 +16,89 @@ const data = {
     "Action",
   ],
   rows: [
-   
+    [
+      "Another",
+      "Pending",
+      "25 Travellers",
+      "Tbilisi",
+      "23",
+      "25 Jul - 01 Aug",
+      "200 Nom",
+      "Check Details",
+    ],
     [
       "Another",
       "Confirmed",
+      "25 Travellers",
+      "Tbilisi",
+      "23",
+      "25 Jul - 01 Aug",
+      "200 Nom",
+      "Check Details",
+    ],
+    [
+      "Another",
+      "Pending",
+      "25 Travellers",
+      "Tbilisi",
+      "23",
+      "25 Jul - 01 Aug",
+      "200 Nom",
+      "Check Details",
+    ],
+    [
+      "Another",
+      "Confirmed",
+      "25 Travellers",
+      "Tbilisi",
+      "23",
+      "25 Jul - 01 Aug",
+      "200 Nom",
+      "Check Details",
+    ],
+    [
+      "Another",
+      "Confirmed",
+      "25 Travellers",
+      "Tbilisi",
+      "23",
+      "25 Jul - 01 Aug",
+      "200 Nom",
+      "Check Details",
+    ],
+    [
+      "Another",
+      "Unverified",
+      "25 Travellers",
+      "Tbilisi",
+      "23",
+      "25 Jul - 01 Aug",
+      "200 Nom",
+      "Check Details",
+    ],
+    [
+      "Another",
+      "Rejected",
+      "25 Travellers",
+      "Tbilisi",
+      "23",
+      "25 Jul - 01 Aug",
+      "200 Nom",
+      "Check Details",
+    ],
+    [
+      "Another",
+      "Rejected",
+      "25 Travellers",
+      "Tbilisi",
+      "23",
+      "25 Jul - 01 Aug",
+      "200 Nom",
+      "Check Details",
+    ],
+    [
+      "Another",
+      "Pending",
       "25 Travellers",
       "Tbilisi",
       "23",
@@ -58,57 +138,7 @@ const data = {
     ],
     [
       "Another",
-      "Confirmed",
-      "25 Travellers",
-      "Tbilisi",
-      "23",
-      "25 Jul - 01 Aug",
-      "200 Nom",
-      "Check Details",
-    ],
-    [
-      "Another",
-      "Confirmed",
-      "25 Travellers",
-      "Tbilisi",
-      "23",
-      "25 Jul - 01 Aug",
-      "200 Nom",
-      "Check Details",
-    ],
-    [
-      "Another",
-      "Confirmed",
-      "25 Travellers",
-      "Tbilisi",
-      "23",
-      "25 Jul - 01 Aug",
-      "200 Nom",
-      "Check Details",
-    ],
-    [
-      "Another",
-      "Confirmed",
-      "25 Travellers",
-      "Tbilisi",
-      "23",
-      "25 Jul - 01 Aug",
-      "200 Nom",
-      "Check Details",
-    ],
-    [
-      "Another",
-      "Confirmed",
-      "25 Travellers",
-      "Tbilisi",
-      "23",
-      "25 Jul - 01 Aug",
-      "200 Nom",
-      "Check Details",
-    ],
-    [
-      "Another",
-      "Confirmed",
+      "Rejected",
       "25 Travellers",
       "Tbilisi",
       "23",
@@ -119,16 +149,29 @@ const data = {
   ],
 };
 export default function DashboardHotel() {
+  const { setPopup } = useOutletContext();
   return (
     <Wrapper>
-      <MarketplaceHeader />
       <MontyleReport />
       {/* prettier-ignore */}
-      <TableHotel header={data.header} rows={data.rows} />
+      <Title>New Inquiries</Title>
+      <Table header={data.header} rows={data.rows} setPopup={setPopup} />
+      <RelatedHotelFares />
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  padding: 60px 20px 0px 20px;
+  padding: 60px 50px 0px 50px;
+`;
+
+const Title = styled.p`
+  color: #4c4c4c;
+  font-size: 18px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  line-height: 32px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 `;
