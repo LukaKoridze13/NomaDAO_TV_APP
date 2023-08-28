@@ -19,7 +19,11 @@ export default function App() {
   useEffect(() => {
     navigate("/Home");
   }, [navigate]);
-
+  useEffect(() => {
+    alert(
+      "This application is developed for Samsung TV, utilizing a resolution of 1920x1080. Navigation within the website is facilitated through the use of arrow keys."
+    );
+  }, []);
   return (
     // prettier-ignore
     <AsideContext.Provider value={{ asideActive, setAsideActive, pages, setPages, activePage, setActivePage}}>
